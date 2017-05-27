@@ -110,8 +110,6 @@ static id _instance;
 
 @end
 
-
-
 BOOL classSwizzleInstanceMethod(Class aClass, SEL originalSel,SEL swizzleSel){
     
     Method originalMethod = class_getInstanceMethod(aClass, originalSel);
