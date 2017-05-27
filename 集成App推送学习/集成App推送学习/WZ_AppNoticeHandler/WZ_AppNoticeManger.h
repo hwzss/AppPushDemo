@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 
 typedef enum : NSUInteger {
-    noticeTaped,
-    noticeUnTaped,
-    noticeTapUnkown,
+    WZ_NoticeTaped,
+    WZ_NoticeUnTaped,
+    WZ_NoticeTapUnkown,
 } WZ_AppNoticeTapType;
 
 typedef void(^WZ_fetchPushTokenBlock)(NSString *pushToken);

@@ -63,19 +63,22 @@ static id _instance;
 }
 #pragma -mark 注册远程通知
 -(void)WZ_registerForRemoteNotifications{
+   
     if (WZ_IOS10_OR_LATER) {
         UNUserNotificationCenter *center  = [UNUserNotificationCenter currentNotificationCenter];
         center.delegate = self;
         [center requestAuthorizationWithOptions:UNAuthorizationOptionAlert|UNAuthorizationOptionBadge|UNAuthorizationOptionSound completionHandler:^(BOOL granted, NSError * _Nullable error) {
             if (granted) {
-                [self.application registerForRemoteNotifications];
+                
             }else{
                 
             }
         }];
+        [self.application registerForRemoteNotifications];
     }else if (WZ_IOS8_OR_LATER){
         UIUserNotificationSettings *setting = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeSound|UIUserNotificationTypeBadge categories:nil];
         [self.application registerUserNotificationSettings:setting];
+        [self.application registerForRemoteNotifications];
     }else{
         [self.application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound|UIRemoteNotificationTypeBadge];
     }
@@ -83,7 +86,7 @@ static id _instance;
 }
 
 -(void)handlerNotificationWithNUserInfo:(NSDictionary *)userInfo IsTap:(WZ_AppNoticeTapType )tapType{
-    
+   //default do nothing
 }
 
 #pragma -mark UNUserNotificationCenterDelegate
@@ -96,7 +99,7 @@ static id _instance;
 }
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler{
     
-    [self handlerNotificationWithNUserInfo:response.notification.request.content.userInfo IsTap:noticeTaped];
+    [self handlerNotificationWithNUserInfo:response.notification.request.content.userInfo IsTap:WZ_NoticeTaped];
     
     completionHandler();
 }
@@ -117,7 +120,7 @@ BOOL classSwizzleInstanceMethod(Class aClass, SEL originalSel,SEL swizzleSel){
     BOOL didAddMethod = class_addMethod(aClass, originalSel, method_getImplementation(swizzleMethod), method_getTypeEncoding(swizzleMethod));
     if (didAddMethod) {
         class_replaceMethod(aClass, swizzleSel, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod));
-//        method_setImplementation(swizzleMethod, imp_implementationWithBlock(<#id block#>))
+//        method_setImplementation(swizzleMethod, imp_implementationWithBlock(id block))
     }else{
         method_exchangeImplementations(originalMethod, swizzleMethod);
     }
@@ -155,7 +158,7 @@ BOOL classSwizzleInstanceMethod(Class aClass, SEL originalSel,SEL swizzleSel){
         NSDictionary *remoteUserInfo =[launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
         NSDictionary *LocalUserInfo =[launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
         if (remoteUserInfo||LocalUserInfo) {
-            [[WZ_AppNoticeManger defaultManger] handlerNotificationWithNUserInfo:remoteUserInfo?remoteUserInfo:LocalUserInfo IsTap:noticeTaped];
+            [[WZ_AppNoticeManger defaultManger] handlerNotificationWithNUserInfo:remoteUserInfo?remoteUserInfo:LocalUserInfo IsTap:WZ_NoticeTaped];
         }
     }
 
@@ -179,13 +182,13 @@ BOOL classSwizzleInstanceMethod(Class aClass, SEL originalSel,SEL swizzleSel){
 #pragma -mark recevice and handle notification
 -(void)WZ_application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
     
-    [[WZ_AppNoticeManger defaultManger] handlerNotificationWithNUserInfo:userInfo IsTap:noticeTapUnkown];
+    [[WZ_AppNoticeManger defaultManger] handlerNotificationWithNUserInfo:userInfo IsTap:WZ_NoticeTapUnkown];
     
     [self WZ_application:application didReceiveRemoteNotification:userInfo];
 }
 -(void)WZ_application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
     
-    [[WZ_AppNoticeManger defaultManger] handlerNotificationWithNUserInfo:notification.userInfo IsTap:noticeTapUnkown];
+    [[WZ_AppNoticeManger defaultManger] handlerNotificationWithNUserInfo:notification.userInfo IsTap:WZ_NoticeTapUnkown];
     
     [self WZ_application:application didReceiveLocalNotification:notification];
 }
