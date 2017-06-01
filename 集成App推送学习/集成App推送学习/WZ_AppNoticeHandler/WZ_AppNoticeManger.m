@@ -95,11 +95,14 @@ static id _instance;
     else if (WZ_IOS8_OR_LATER)
     {
         UIUserNotificationSettings *setting = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeSound | UIUserNotificationTypeBadge categories:nil];
+        //注册推送
         [self.application registerUserNotificationSettings:setting];
+        //获取token
         [self.application registerForRemoteNotifications];
     }
     else
     {
+        //注册推送以及获取token
         [self.application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeBadge];
     }
 }
