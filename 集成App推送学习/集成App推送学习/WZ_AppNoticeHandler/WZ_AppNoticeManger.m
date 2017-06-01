@@ -141,8 +141,7 @@ BOOL classSwizzleInstanceMethod(Class aClass, SEL originalSel, SEL swizzleSel)
     if (!originalMethod)
     {
         class_addMethod(aClass, originalSel, method_getImplementation(swizzleMethod), method_getTypeEncoding(swizzleMethod));
-        method_setImplementation(swizzleMethod, imp_implementationWithBlock(^(id self, SEL _cmd){
-                                                }));
+        method_setImplementation(swizzleMethod, imp_implementationWithBlock(^(id self, SEL _cmd){ }));
     }
     else
     {
