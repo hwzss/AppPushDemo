@@ -7,4 +7,4 @@
 ```
 
 由于需要给新人做的App集成推送，需求简单，就是集成一般推送然后能处理推送回调即可。
-总结：
+总结：![](https://github.com/hwzss/AppPushDemo/blob/master/app%E6%8E%A8%E9%80%81%E7%AE%A1%E7%90%86%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93.png)
