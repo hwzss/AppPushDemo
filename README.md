@@ -1,5 +1,5 @@
 # AppPushDemo
-集成化App推送，一个分类尝试搞定。只需要映入该文件到项目中，然后通过下面代码，获取到设备的token，上传到后台服务器即可
+集成化App推送，一个分类尝试搞定。只需要导入该文件到项目中即可，然后通过下面代码，获取到设备的token，上传到后台服务器即可
 ```
     [[WZ_AppNoticeManger defaultManger] WZ_fetchPushToken:^(NSString *pushToken) {
          NSLog(@"%s",__func__);
